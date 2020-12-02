@@ -8,7 +8,7 @@ fun main(args: Array<String>) {
 
 fun checkCharsPositions(line: String): Boolean {
     //pattern 3-5 f: fgfff
-    val splitted = line.split("-", " ").map { it.trim().replace(":", "") }
+    val splitted = line.split("-", " ").map { it.replace(":", "") }
 
     val position1 = splitted[0].toInt() - 1
     val position2 = splitted[1].toInt() - 1
