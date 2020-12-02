@@ -8,11 +8,11 @@ fun main(args: Array<String>) {
 
 fun checkCharsRepetitions(line: String): Boolean {
     //pattern 3-5 f: fgfff
-    val splitted = line.split("-", " ").map { it.replace(":", "") }
+    val splitted = line.replace(":", "").split("-", " ")
 
     val min = splitted[0].toInt()
     val max = splitted[1].toInt()
-    val letter = splitted[2].toCharArray()[0]
+    val letter = splitted[2][0]
     val input = splitted[3]
 
     val count = input.filter { it == letter }.count()
