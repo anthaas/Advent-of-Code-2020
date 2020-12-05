@@ -7,10 +7,9 @@ fun main(args: Array<String>) {
 }
 
 private fun findSeat(seatsIds: List<Int>): Int {
-    val min = seatsIds.min()!!
-    val max = seatsIds.max()!!
-    (min..max).map { if (it !in seatsIds) return it }
-    return 0
+    val min = seatsIds.min() ?: return 0
+    val max = seatsIds.max() ?: return 0
+    return (min..max).minus(seatsIds)[0]
 }
 
 private fun getSeatId(seat: String): Int{
