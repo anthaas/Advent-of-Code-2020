@@ -28,7 +28,7 @@ private fun countOccupiedNeigboursOf(x: Int, y: Int, board: List<CharArray>): In
     var count = 0
     (-1..1).forEach { i ->
         (-1..1).forEach { j ->
-            count += if (i == 0 && j == 0) 0 else countOccupiedInDirection(Pair(x+i, y+j), i, j, board)
+            count += if (i == 0 && j == 0) 0 else countOccupiedInDirection(Pair(x + i, y + j), i, j, board)
         }
     }
 
@@ -38,9 +38,9 @@ private fun countOccupiedNeigboursOf(x: Int, y: Int, board: List<CharArray>): In
 fun countOccupiedInDirection(position: Pair<Int, Int>, i: Int, j: Int, board: List<CharArray>): Int {
     var (x, y) = position
     while (!((x !in 0 until board.size) || (y !in 0 until board[0].size))) {
-        when {
-            board[x][y] == EMPTY -> return 0
-            board[x][y] == OCCUPIED -> return 1
+        when (board[x][y]) {
+            EMPTY -> return 0
+            OCCUPIED -> return 1
         }
         x += i
         y += j
