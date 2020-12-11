@@ -15,10 +15,7 @@ fun main(args: Array<String>) {
     }
 
     val occupiedSeats = board.map { it.map { it == OCCUPIED }.count { it } }.sum()
-
     println(occupiedSeats)
-
-
 }
 
 private fun areSame(board: List<CharArray>, nextIter: List<CharArray>): Boolean {
@@ -29,11 +26,11 @@ private fun areSame(board: List<CharArray>, nextIter: List<CharArray>): Boolean 
 
 private fun countOccupiedNeigboursOf(x: Int, y: Int, board: List<CharArray>): Int {
     var count = 0
-    for (i in -1..1) {
-        for (j in -1..1) {
-            if (!((x + i !in 0 until board.size) || (y + j !in 0 until board[0].size))) {
-                if (board[x + i][y + j] == OCCUPIED && !(j == 0 && i == 0)) count++
-            }
+    (-1..1).forEach { i ->
+        (-1..1).forEach { j ->
+            if (!((x + i !in 0 until board.size) || (y + j !in 0 until board[0].size)) && !(j == 0 && i == 0)
+                && board[x + i][y + j] == OCCUPIED
+            ) count++
         }
     }
 
@@ -41,19 +38,13 @@ private fun countOccupiedNeigboursOf(x: Int, y: Int, board: List<CharArray>): In
 }
 
 private fun evolve(board: List<CharArray>): List<CharArray> {
-    //rules
-    //EMPTY and neighboursCount == 0 -> OCCUPIED
-    //OCCUPIED and neighboursCount > 3 -> EMPTY
-    //else no change
-
     val newBoard = MutableList(board.size) { " ".repeat(board[0].size).toCharArray() }
-    for (x in (0 until board.size)) {
-        for (y in (0 until board[0].size)) {
-            val countNeigbours = countOccupiedNeigboursOf(x, y, board)
-            newBoard[x][y] = when {
-                board[x][y] == EMPTY && countNeigbours == 0 -> OCCUPIED
-                board[x][y] == OCCUPIED && countNeigbours > 3 -> EMPTY
-                else -> board[x][y]
+    board.forEachIndexed { x, line ->
+        line.forEachIndexed { y, actualPositionSymbol ->
+            newBoard[x][y] = when (actualPositionSymbol) {
+                EMPTY -> if (countOccupiedNeigboursOf(x, y, board) == 0) OCCUPIED else EMPTY
+                OCCUPIED -> if (countOccupiedNeigboursOf(x, y, board) > 3) EMPTY else OCCUPIED
+                else -> actualPositionSymbol
             }
         }
     }
