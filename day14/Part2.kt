@@ -7,18 +7,12 @@ fun main(args: Array<String>) {
     input.map {
         when {
             it.startsWith("mask") -> mask = it.split(" = ")[1]
-            it.startsWith("mem") ->
-                it.split(" = ").let { (index, value) ->
-                    index.replace("mem[", "").replace("]", "").toInt() to value.toLong()
-                }
-                    .let { (index, value) ->
-                        getAllIndexesByMask(index, mask).map { mem.put(it, value) }
-
-                    }
+            it.startsWith("mem") -> it.split(" = ")
+                .let { (index, value) -> index.replace(Regex("""mem\[|\]"""), "").toInt() to value.toLong() }
+                .let { (index, value) -> getAllIndexesByMask(index, mask).map { mem.put(it, value) } }
             else -> error("unknown op")
         }
     }
-
     println(mem.values.sum())
 }
 
