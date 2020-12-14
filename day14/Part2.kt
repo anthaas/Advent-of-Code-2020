@@ -31,15 +31,13 @@ fun getAllIndexesByMask(index: Int, mask: String): List<Long> {
             else -> m
         }
     }.toCharArray()
-    val maskedIndex = String(masked)
-    return getAllCombinations(maskedIndex).map { it.toLong(2) }
+    return getAllCombinations(String(masked)).map { it.toLong(2) }
 }
 
 private fun getAllCombinations(entry: String): List<String> {
     if ('X' !in entry) {
         return listOf(entry)
     }
-
     return getAllCombinations(entry.replaceFirst('X', '0')) + getAllCombinations(entry.replaceFirst('X', '1'))
 }
 
