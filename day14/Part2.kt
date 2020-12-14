@@ -1,5 +1,4 @@
 import java.io.File
-import java.math.BigInteger
 
 fun main(args: Array<String>) {
     val input = File("input.txt").bufferedReader().use { it.readText() }.split("\n")
@@ -19,9 +18,8 @@ fun main(args: Array<String>) {
             else -> error("unknown op")
         }
     }
+
     println(mem.values.sum())
-
-
 }
 
 fun getAllIndexesByMask(index: Int, mask: String): List<Long> {
@@ -34,32 +32,14 @@ fun getAllIndexesByMask(index: Int, mask: String): List<Long> {
         }
     }.toCharArray()
     val maskedIndex = String(masked)
-    val allCombinations = ArrayList(replaceFirastX(maskedIndex))
-    while (allCombinations.map { it.contains("X") }.any { it }) {
-        val toAdd = mutableListOf<String>()
-        val toRemove = mutableListOf<String>()
-        for (entry in allCombinations) {
-            if (entry.contains("X")) {
-                toRemove.add(entry)
-                toAdd.addAll(replaceFirastX(entry))
-            }
-        }
-        allCombinations.removeAll(toRemove)
-        allCombinations.addAll(toAdd)
-    }
-
-    return allCombinations.map { BigInteger(it, 2).toLong() }
+    return getAllCombinations(maskedIndex).map { it.toLong(2) }
 }
 
-private fun replaceFirastX(entry: String): List<String> {
-    val changed = mutableListOf<String>()
-    entry.forEachIndexed { i, c ->
-        if (c == 'X') {
-            changed.add(entry.substring(0, i) + "0" + entry.substring(i + 1, entry.length))
-            changed.add(entry.substring(0, i) + "1" + entry.substring(i + 1, entry.length))
-            return changed
-        }
+private fun getAllCombinations(entry: String): List<String> {
+    if ('X' !in entry) {
+        return listOf(entry)
     }
-    return emptyList()
+
+    return getAllCombinations(entry.replaceFirst('X', '0')) + getAllCombinations(entry.replaceFirst('X', '1'))
 }
 
