@@ -1,17 +1,19 @@
 fun main(args: Array<String>) {
-    val input = listOf(-1,11,18,0,20,1,7,16).toMutableList()
-    for( i in (input.size .. 2020)) {
-        val lastNumber = input.last()
-        val lastIndex = input.lastIndexOf(lastNumber)
-        if (lastIndex == input.indexOf(lastNumber)) {
-            input.add(0)
+    val indexMap = mutableMapOf<Int, Int>()
+    val input = listOf(11, 18, 0, 20, 1, 7, 16)
+    input.forEachIndexed { index, i -> indexMap[i] = index }
+    var last = input.last()
+    (input.size until 2020).forEach { i ->
+        if (last !in indexMap) {
+            indexMap[last] = i - 1
+            last = 0
         } else {
-            input.add(lastIndex - input.subList(0,lastIndex).lastIndexOf(lastNumber))
+            val distance = i - 1 - indexMap[last]!!
+            indexMap[last] = i - 1
+            last = distance
         }
     }
-
-    println(input.last())
-
+    println(last)
 }
 
 
