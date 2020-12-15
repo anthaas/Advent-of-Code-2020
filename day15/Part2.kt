@@ -1,5 +1,4 @@
 fun main(args: Array<String>) {
-    val start = System.currentTimeMillis()
     val indexMap = mutableMapOf<Int, Int>()
     val input = listOf(11, 18, 0, 20, 1, 7, 16)
     input.forEachIndexed { index, i -> indexMap[i] = index }
@@ -15,5 +14,4 @@ fun main(args: Array<String>) {
         }
     }
     println(last)
-    println(System.currentTimeMillis() - start)
 }
