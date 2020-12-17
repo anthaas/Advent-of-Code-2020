@@ -18,13 +18,15 @@ fun main(args: Array<String>) {
     println(aliveCells.size)
 }
 
-private fun evolve(aliveCells: List<List<Int>>): List<List<Int>> {
-    return aliveCells.map { getNeighborsPosition(it[0], it[1], it[2], it[3]) }.flatten().distinct().mapNotNull {
-        val neighbors = getNeighborsPosition(it[0], it[1], it[2], it[3])
-        val aliveNeighbors = neighbors.map { it in aliveCells }.count { it }
-        if ((it in aliveCells && (aliveNeighbors == 2 || aliveNeighbors == 3)) || (it !in aliveCells && aliveNeighbors == 3)) it else null
+private fun evolve(aliveCells: List<List<Int>>): List<List<Int>> =
+    aliveCells.map { getNeighborsPosition(it[0], it[1], it[2], it[3]) }.flatten().distinct().mapNotNull {
+        val aliveNeighbors = getNeighborsPosition(it[0], it[1], it[2], it[3]).map { it in aliveCells }.count { it }
+        when {
+            (it in aliveCells && (aliveNeighbors == 2 || aliveNeighbors == 3)) -> it
+            (it !in aliveCells && aliveNeighbors == 3) -> it
+            else -> null
+        }
     }
-}
 
 private fun getNeighborsPosition(x: Int, y: Int, z: Int, w: Int): List<List<Int>> {
     val result = mutableListOf<List<Int>>()
