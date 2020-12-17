@@ -19,21 +19,11 @@ fun main(args: Array<String>) {
 }
 
 private fun evolve(aliveCells: List<List<Int>>): List<List<Int>> {
-    val cellsToCheck = aliveCells.map { getNeighborsPosition(it[0], it[1], it[2], it[3]) }.flatten().distinct()
-    val aliveForNextIter = mutableListOf<List<Int>>()
-    cellsToCheck.forEach {
-        val currentCell = listOf(it[0], it[1], it[2], it[3])
+    return aliveCells.map { getNeighborsPosition(it[0], it[1], it[2], it[3]) }.flatten().distinct().mapNotNull {
         val neighbors = getNeighborsPosition(it[0], it[1], it[2], it[3])
         val aliveNeighbors = neighbors.map { it in aliveCells }.count { it }
-        if (currentCell in aliveCells && (aliveNeighbors == 2 || aliveNeighbors == 3)) {
-            aliveForNextIter.add(currentCell)
-        }
-        if (currentCell !in aliveCells && aliveNeighbors == 3) {
-            aliveForNextIter.add(currentCell)
-        }
+        if ((it in aliveCells && (aliveNeighbors == 2 || aliveNeighbors == 3)) || (it !in aliveCells && aliveNeighbors == 3)) it else null
     }
-
-    return aliveForNextIter
 }
 
 private fun getNeighborsPosition(x: Int, y: Int, z: Int, w: Int): List<List<Int>> {
