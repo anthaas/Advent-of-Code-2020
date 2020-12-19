@@ -13,9 +13,10 @@ private fun convertToRegex(rules: Map<Int, String>): String {
 
     while (regexStr.any { s -> s.toIntOrNull() != null }) {
         regexStr = regexStr.map { s ->
-            s.toIntOrNull()?.let { n ->
-                rules[n]!!.removeSurrounding("\"").split(" ").let { listOf("(") + it + ")" }
-            } ?: listOf(s)
+            when (s.toIntOrNull()) {
+                null -> listOf(s)
+                else -> rules[s.toInt()]!!.removeSurrounding("\"").split(" ").let { listOf("(") + it + ")" }
+            }
         }.flatten()
     }
 
