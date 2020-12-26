@@ -4,6 +4,16 @@ fun main(args: Array<String>) {
     val input = File("input.txt").readLines().map {
         it.replace("ne", "a").replace("nw", "b").replace("se", "c").replace("sw", "d")
     }
+    // cube coordinates
+    // n: invalid
+    // ne = a: x+1,y,z-1
+    // e: x+1,y-1,z
+    // se = c: x,y-1,z+1
+    // s: invalid
+    // sw = d: x-1,y,z+1
+    // w: x-1,y+1,z
+    // nw = b: x,y+1,z-1
+
     val visitedTiles = mutableMapOf<Triple<Int, Int, Int>, Int>()
     input.map {
         var x = 0
@@ -39,7 +49,10 @@ fun main(args: Array<String>) {
             }
         }
         val tile = Triple(x, y, z)
-        if (visitedTiles[tile] == null) visitedTiles.put(tile, 1) else visitedTiles.put(tile, visitedTiles[tile]!! + 1)
+        when (val count = visitedTiles[tile]) {
+            null -> visitedTiles[tile] = 1
+            else -> visitedTiles[tile] = count + 1
+        }
     }
 
     val result = visitedTiles.filter { (_, value) -> value % 2 != 0 }.size
